@@ -1,5 +1,5 @@
 <div align="center">
-  <h3 align="center">Street Fighter Clone Made in Python</h3>
+  <h3 align="center">2D Fighting Game</h3>
   <p align="center">
     Brawler is a 2D Street Fighter-style fighting game implemented in Python using the Pygame library.
   </p>
