@@ -22,7 +22,7 @@ YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 
 #Define game variables
-intro_count = 3
+intro_count = 0
 last_count_update = pygame.time.get_ticks()
 score = [0, 0] #Player scores [P1, P2]
 round_over = False
@@ -108,6 +108,7 @@ while run:
     else:
         #Display countdown timer
         draw_text(str(intro_count), count_font, RED, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 4)
+        
         #Update countdown timer
         if (pygame.time.get_ticks() - last_count_update) >= 1000:
             intro_count -= 1

@@ -12,6 +12,7 @@ class Fighter():
         self.hit_offset = [85, 81.5]
         self.death_offset = [85, 83]
         self.flip = flip
+
         #Player animation
         self.animation_list = self.load_images(sprite_sheet, animation_frames)
         self.action = 0 #0:idle #1:run #2:jump #3:attack1 #4:attack2 #5:hit #6:death
@@ -20,16 +21,18 @@ class Fighter():
         self.update_time = pygame.time.get_ticks()
         self.rect = pygame.Rect((x, y, 80, 180))
         self.vel_y = 0
+
         #Player status and actions
         self.running = False
         self.jump = False
         self.attacking = False
         self.attack_type = 0
         self.attack_cooldown = 0
+        self.last_attack_time = 0
         self.attack_sound = attack_sound
         self.hit = False
         self.hit_sound = hit_sound
-        self.health = 50
+        self.health = 100
         self.alive = True
     
     def load_images(self, sprite_sheet, animation_frames):
@@ -162,24 +165,30 @@ class Fighter():
         else:
             self.update_action(0) #0:idle     
 
-        animation_cooldown = 80
+        animation_cooldown = 45
+
         #Update image
         self.image = self.animation_list[self.action][self.frame_index]
+
         #Check if enough time has passed since last update
         if pygame.time.get_ticks() - self.update_time > animation_cooldown:
             self.frame_index += 1
             self.update_time = pygame.time.get_ticks()
+
         #Check if animation has finished
         if self.frame_index >= len(self.animation_list[self.action]): #If next animation index is out of range
+
             #If player is dead, end animation
             if self.alive == False:
                 self.frame_index = len(self.animation_list[self.action]) - 1
             else:
                 self.frame_index = 0
+
                 #Check if an attack was performed
                 if self.action == 3 or self.action == 4:
                     self.attacking = False
                     self.attack_cooldown = 20
+
                 #Check if damage was taken
                 if self.action == 5:
                     self.hit = False
@@ -189,22 +198,39 @@ class Fighter():
 
     #Method to attack
     def attack(self, target):
-        if self.attack_cooldown == 0:
+        #Add a delay before allowing another attack
+        ATTACK_DELAY = 300
+
+        if self.attack_cooldown == 0 and pygame.time.get_ticks() - self.last_attack_time > ATTACK_DELAY:
             self.attacking = True
             self.attack_sound.play()
+            
             #Create attack hitbox facing target, from center of player
-            attacking_rect = pygame.Rect(self.rect.centerx - (2 * self.rect.width * self.flip), self.rect.y, 2 * self.rect.width, self.rect.height)
+            attack_width = 3 * self.rect.width
+            attack_height = self.rect.height
+            if self.flip:
+                attacking_rect = pygame.Rect(self.rect.left - attack_width, self.rect.y, attack_width, attack_height)
+            else:
+                attacking_rect = pygame.Rect(self.rect.right, self.rect.y, attack_width, attack_height)
+            
             #Check for collision with target
             if attacking_rect.colliderect(target.rect):
-                target.health -= 10
+                target.health -= 25
                 target.hit = True
                 self.hit_sound.play()
+
+            #Set the attack cooldown
+            self.attack_cooldown = 20
+            self.last_attack_time = pygame.time.get_ticks()
             #pygame.draw.rect(surface, (0, 255, 0), attacking_rect)
+
+
 
     def update_action(self, new_action):
         #Check if the new action is different to previous one
         if new_action != self.action:
             self.action = new_action
+
             #Update animation settings
             self.frame_index = 0
             self.update_time = pygame.time.get_ticks()
