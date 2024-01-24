@@ -36,12 +36,12 @@ class Fighter():
         self.alive = True
     
     def load_images(self, sprite_sheet, animation_frames):
-        #Extract images from spreadsheet
+        #Extract images from spritesheet
         animation_list = []
         #y = 0
         for y, animation in enumerate(animation_frames): #Track each frame
             temp_img_list = []
-            #Create temp list of frames from each row of spreadsheet to add to main list
+            #Create temp list of frames from each row of spritesheet to add to main list
             for x in range(animation):
                 temp_img = sprite_sheet.subsurface(x * self.size, y * self.size, self.size, self.size)
                 pygame.transform.scale(temp_img, (self.size * self.image_scale, self.size * self.image_scale))
@@ -215,7 +215,7 @@ class Fighter():
             
             #Check for collision with target
             if attacking_rect.colliderect(target.rect):
-                target.health -= 25
+                target.health -= 34
                 target.hit = True
                 self.hit_sound.play()
 

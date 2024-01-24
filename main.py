@@ -22,7 +22,7 @@ YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 
 #Define game variables
-intro_count = 0
+intro_count = 3
 last_count_update = pygame.time.get_ticks()
 score = [0, 0] #Player scores [P1, P2]
 round_over = False
