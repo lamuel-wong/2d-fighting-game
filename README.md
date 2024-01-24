@@ -30,6 +30,10 @@ This project served as a valuable learning experience as a hands-on way to pract
 3. **Open main.py and run**
 4. **Play the game**
 
+## Screen Recording
+
+https://github.com/lamuel-wong/2d-fighting-game/assets/153697989/6e4d4470-7c2b-4aec-94a8-275c0b9bb72f
+
 ## Controls
 Player 1:
 - Move left - A
